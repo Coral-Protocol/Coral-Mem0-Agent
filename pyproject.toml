@@ -1,0 +1,13 @@
+[project]
+name = "coral-mem0-agent"
+version = "0.1.0"
+description = "Agent that uses Mem0 tool for memory"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "crewai==0.126.0",
+    "python-dotenv",
+    "crewai-tools==0.47.1",
+    "crewai-tools[mcp]",  
+    "mem0ai==0.1.115"
+]
