@@ -46,7 +46,7 @@ uv sync
 ### 2. Configure Environment Variables
 
 Get the API Keys:
-- [OpenRouter](https://openrouter.ai/keys)
+- [OpenRouter](https://openrouter.ai/keys) or your preferred LLM provider
 - [MEM0_API_KEY](https://app.mem0.ai/dashboard/api-keys)
 
 <details>
@@ -55,6 +55,24 @@ Get the API Keys:
 # Create .env file in project root
 cp -r .env.example .env
 ```
+
+Configure the following environment variables in your `.env` file:
+
+```bash
+# Coral Server Configuration
+CORAL_SSE_URL=your_coral_sse_url_here
+CORAL_AGENT_ID=your_agent_id_here
+
+# Model Configuration
+MODEL_PROVIDER=openrouter/openai
+MODEL_NAME=gpt-4.1-mini
+MODEL_API_KEY=your_model_api_key_here
+MODEL_BASE_URL=https://openrouter.ai/api/v1
+
+# Mem0 Configuration
+MEM0_API_KEY=your_mem0_api_key_here
+```
+
 </details>
 
 ## Run the Agent
@@ -87,9 +105,18 @@ applications:
 registry:
   mem0_agent:
     options:
-      - name: "OPENROUTER_API_KEY"
+      - name: "MODEL_PROVIDER"
         type: "string"
-        description: "OpenRouter API key for the service"
+        description: "Model provider (e.g., openrouter/openai)"
+      - name: "MODEL_NAME"
+        type: "string"
+        description: "Model name (e.g., gpt-4.1-mini)"
+      - name: "MODEL_API_KEY"
+        type: "string"
+        description: "API key for the model provider"
+      - name: "MODEL_BASE_URL"
+        type: "string"
+        description: "Base URL for the model provider API"
       - name: "MEM0_API_KEY"
         type: "string"
         description: "Mem0 API key for memory management"
@@ -97,8 +124,14 @@ registry:
       type: "executable"
       command: ["bash", "-c", "${PROJECT_DIR}/run_agent.sh main.py"]
       environment:
-        - name: "OPENROUTER_API_KEY"
-          from: "OPENROUTER_API_KEY"
+        - name: "MODEL_PROVIDER"
+          from: "MODEL_PROVIDER"
+        - name: "MODEL_NAME"
+          from: "MODEL_NAME"
+        - name: "MODEL_API_KEY"
+          from: "MODEL_API_KEY"
+        - name: "MODEL_BASE_URL"
+          from: "MODEL_BASE_URL"
         - name: "MEM0_API_KEY"
           from: "MEM0_API_KEY"
 

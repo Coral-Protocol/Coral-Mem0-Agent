@@ -98,10 +98,15 @@ async def main():
     
     # Initialize the LLM with retry logic
     try:
+        model_provider = os.getenv("MODEL_PROVIDER", "openrouter/openai")
+        model_name = os.getenv("MODEL_NAME", "gpt-4.1-mini")
+        model_api_key = os.getenv("MODEL_API_KEY")
+        model_base_url = os.getenv("MODEL_BASE_URL", "https://openrouter.ai/api/v1")
+        
         llm = LLM(
-            model="openrouter/openai/gpt-4.1-mini",
-            base_url="https://openrouter.ai/api/v1",
-            api_key=os.getenv("OPENROUTER_API_KEY"),
+            model=f"{model_provider}/{model_name}",
+            base_url=model_base_url,
+            api_key=model_api_key,
         )
     except Exception as e:
         logger.error(f"Failed to initialize LLM: {str(e)}")
